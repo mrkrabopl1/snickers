@@ -1,0 +1,9 @@
+.mainElem{
+   
+    padding: 5px;
+}
+.complexDrop{
+    /* box-shadow: 1px 2px 10px 5px rgba(0,0,0,0.3); */
+    display: flex;
+    position: relative;
+}
