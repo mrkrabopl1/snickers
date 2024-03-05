@@ -10,12 +10,18 @@ const searchImport = function (searchName:string,callback:(val:any)=>void){
     }
 )}
 
-const searchNames = function (searchName:string,callback:(val:any)=>void){
+const searchNames = function (searchName:string,max:number,callback:(val:any)=>void){
 
     axios({
-        method: 'get',
-        url: 'http://127.0.0.1:5000/searchMerch'+"?"+"name="+searchName,
-        headers: {}
+        method: 'post',
+        url: 'http://127.0.0.1:8100/searchMerch',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        data:JSON.stringify({
+            name:searchName,
+            max:max
+        })
     }
     ).then((res:any)=>{
        callback(res.data)
@@ -26,7 +32,7 @@ const searchNames = function (searchName:string,callback:(val:any)=>void){
 type dataType = {price:number[],sizes:number[]}
 
 
-const getFullMerchInfo= function (filters:{[key:string]:any},callback:(data:any)=>void){
+const getMerchOnPage= function (filters:{[key:string]:any},callback:(data:any)=>void){
     let json = JSON.stringify(filters)
     console.debug(json)
     axios({
@@ -79,4 +85,4 @@ const getFilters = function (callback:(data:dataType)=>void){
     })
 }
 
-export {searchImport,searchNames,getFilters,getFullMerchInfo,getFullMerchInfoByFilters}
+export {searchImport,searchNames,getFilters,getMerchOnPage,getFullMerchInfoByFilters}

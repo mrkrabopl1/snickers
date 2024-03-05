@@ -53,11 +53,11 @@ const SnickersInfo: React.FC = () => {
     const navigate = useNavigate();
     let dispatch = useAppDispatch()
     let {snickers} = useParams<urlParamsType>();
-    let [merchInfo,setMerchInfo] = useState<any>([[],"",{}])
+    let [merchInfo,setMerchInfo] = useState<any>({imgs:[],name:"",info:{}})
 
 
     
-    let size = Object.keys(merchInfo[2])[0]
+    let size = Object.keys(merchInfo.info)[0]
     let currentSize = useRef<Set<string>>(new Set())
     if(size){
         currentSize.current.add(size);
@@ -87,15 +87,15 @@ const SnickersInfo: React.FC = () => {
               <div className={s.mainWrap}>
         
         <div style={{height:"100%",width:"70%"}}>
-          <ImagePresantation images={merchInfo[0]}/>
+          <ImagePresantation images={merchInfo.imgs}/>
         </div>
         <div style={{height:"100%",width:"30%"}}>
          <Button text={"размеры"} onChange={()=>{
             
             setActive(true)
             }}/>
-         <h1 className={s.merchName} >{merchInfo[1]}</h1>   
-         <PriceHolder onChange = {(size)=>{currentSize.current = size}} elems={merchInfo[2]}/>
+         <h1 className={s.merchName} >{merchInfo.name}</h1>   
+         <PriceHolder onChange = {(size)=>{currentSize.current = size}} elems={merchInfo.info}/>
          <Button  text='Купить' className={s.buyMerch} onChange={()=>{
           navigate("/form")
          }}/>

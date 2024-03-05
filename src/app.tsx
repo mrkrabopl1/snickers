@@ -7,7 +7,7 @@ import Menu from "src/modules/menu/Menu"
 import ComplexDropMenu from './modules/menu/ComplexDropMenu'
 import MerchSliderField from './modules/merchField/MerchSliderField'
 import { getBrends } from './providers/merchProvider'
-
+import axios from "axios";
 import DropZone from "src/develop/dropZone/DropZone"
 import MerchBlock from './modules/merchField/MerchBlock'
 import Root from './Root'
@@ -30,13 +30,6 @@ import {
 import SettingsModule from './modules/settingsModule/SettingsModule'
 import SearchPage from './pages/SearchPage'
 
-let complexDropData = {
-  "NIKE": ["Dunk", "AirForce"],
-  "AIR JORDAN": ["Air Jordan", "Air Jordan"]
-
-}
-
-
 
 const App: React.FC<any> = () => {
   let [merchFieldData, setMerchFieldData] = useState<any>([])
@@ -44,67 +37,71 @@ const App: React.FC<any> = () => {
 
 
   const { chousenName } = useAppSelector(state => state.complexDropReducer)
-  useEffect(() => {
-    getBrends(setMerchFieldData)
+  useEffect(() => { 
+    axios({
+      method: 'get',
+      url: 'http://127.0.0.1:8100/firms',
+      headers: {}
+  }
+  ).then((res:any)=>{
+    setMerchFieldData(res.data)
+  })
+    //getBrends(setMerchFieldData)
   }, [chousenName])
   return (
-
     <Router>
-      <div>
-        {<ComplexDropMenu complexDropData={merchFieldData}/>}
-      <Routes>
-        <Route path="/" element={<div>
-          <Main/>
-          <Outlet />
+        <Routes>
+          <Route path="/"  element={<div>
+              <ComplexDropMenu complexDropData={merchFieldData} />
+              <Outlet />
+            </div>}>
 
-        </div>}>
-        </Route>
-        <Route path="/test/:load" element={
-          <DropZone />
+            <Route path="/" element={
+              <Main />
+           }>
+            </Route>
+            <Route path="/test/:load" element={
+              <DropZone />
 
-        }>
+            }>
 
-        </Route>
-        <Route path="/product/:snickers" element={
-         <SnickersInfo/>
+            </Route>
+            <Route path="/product/:snickers" element={
+              <SnickersInfo />
 
-        }
-        >
+            }
+            >
 
-        </Route>
-        <Route path="/collections/:collection" element={
-         <CollectionPage/>
+            </Route>
+            <Route path="/collections/:collection" element={
+              <CollectionPage />
 
-        }
-        >
+            }
+            >
 
-        </Route>
-        <Route path="/form" element={
-         <Form/>
+            </Route>
+            <Route path="/form" element={
+              <Form />
 
-        }
-        >
+            }
+            >
 
-        </Route>
-        <Route path="/settingsMenu" element={
-        <SearchPage/>
+            </Route>
+            <Route path="/settingsMenu" element={
+              <SearchPage />
 
-        }
-        >
-        </Route>
-        <Route path="/buy" element={
-        <BuyPage/>
+            }
+            >
+            </Route>
+            <Route path="/buy" element={
+              <BuyPage />
 
-        }
-        >
-
-         
-        </Route> 
+            }
+            >
+            </Route>
+          </Route>
         </Routes>
-      </div>
     </Router>
-
-
   )
 }
 

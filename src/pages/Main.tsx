@@ -1,17 +1,11 @@
 import React, { useEffect, ReactElement, useState, useRef } from 'react'
 
 import MerchSliderField from '../modules/merchField/MerchSliderField'
-import ComplexDrop from "src/components/complexDrop/complexDrop"
 import { imgImport, getImgs, getImg } from "src/providers/imgProvider"
 import { getMainInfo } from "src/providers/merchProvider"
 import { useAppSelector } from 'src/store/hooks/redux'
 import { useNavigate } from 'react-router-dom';
 import MerchBanner from 'src/modules/merchBanner/MerchBanner'
-let complexDropData = {
-    "NIKE": ["Dunk", "AirForce"],
-    "AIR JORDAN": ["Air Jordan", "Air Jordan"]
-  
-  }
 
 const Main: React.FC<any> = () => {
 
@@ -55,11 +49,11 @@ const Main: React.FC<any> = () => {
 }
   const { chousenName } = useAppSelector(state => state.complexDropReducer)
   useEffect(() => {
-    getImgs("NIKE", setMerchFieldData)
+    getImgs("air_jordan_1", setMerchFieldData)
   }, [chousenName])
   useEffect(() => {
 
-    getMainInfo( createUrlImage)
+  //  getMainInfo( createUrlImage)
 }, [])
     let [merchFieldData, setMerchFieldData] = useState<any>(null)
   
@@ -67,7 +61,6 @@ const Main: React.FC<any> = () => {
     return (
 
         <div>
-          <ComplexDrop data={complexDropData} />
           <MerchBanner onChange={onChangeBanner} id={imgBanner.id} title={imgBanner.name} img={imgBanner.image}/>
 
           <MerchSliderField data={merchFieldData} />

@@ -5,22 +5,24 @@ import PageController from 'src/components/contentSlider/slidersSwitchers/PageCo
 import s from "./style.module.css"
 
 
-interface merchInterface { name: string,
-     imgs: string[],
-      id: string,
-       className?:string
-    }
-interface merchFieldInterface {heightRow?:number,
-     pages:number,
-     currentPage:number,
-     className?:string,
+interface merchInterface {
+    name: string,
+    imgs: string[],
+    id: string,
+    className?: string
+}
+interface merchFieldInterface {
+    heightRow?: number,
+    pages: number,
+    currentPage: number,
+    className?: string,
     size: number,
-    data: merchInterface[] ,
-    onChange:(args:any)=>void
+    data: merchInterface[],
+    onChange: (args: any) => void
 }
 
 const MerchFieldWithPageSwitcher: React.FC<merchFieldInterface> = (props) => {
-    let { data, size,className ,heightRow,pages,currentPage,onChange} = { ...props }
+    let { data, size, className, heightRow, pages, currentPage, onChange } = { ...props }
     data = [...data]
     const createWidth = () => {
         return 100 / size + "%"
@@ -39,7 +41,7 @@ const MerchFieldWithPageSwitcher: React.FC<merchFieldInterface> = (props) => {
                 data.shift()
             }
 
-            arr.push(<div style={heightRow?{height:heightRow+"px"}:{}} className={className?className:s.merchField}>
+            arr.push(<div style={heightRow ? { height: heightRow + "px" } : {}} className={className ? className : s.merchField}>
                 {arrSm}
             </div>)
         }
@@ -50,11 +52,11 @@ const MerchFieldWithPageSwitcher: React.FC<merchFieldInterface> = (props) => {
         <div>
             {createBlocks()}
             <PageController currentPosition={currentPage} positions={pages} callback={onChange} />
-            
+
         </div>
 
     )
 }
 
 
-export  default MerchFieldWithPageSwitcher
+export default MerchFieldWithPageSwitcher

@@ -70,7 +70,7 @@ const ContentSlider: React.FC<ContentSliderType> = (data) => {
     function moveSlider(page:number){
         diffFromPreviousAnimation.current = 0;
 
-        let stepDiff = page - currentStep.current
+        let stepDiff = currentStep.current - page
         if(!animating.current){
             if((stepDiff>0 && currentStep.current>1) || (stepDiff<0 && currentStep.current<stepCount)){
                 animating.current = true
@@ -94,7 +94,7 @@ const ContentSlider: React.FC<ContentSliderType> = (data) => {
             <div ref={slider} style={{left:sliderPosition+"px",display:"flex", position:"relative" }}>
                {content}
             </div>
-            <PageController currentPosition={20} positions={200} callback={moveSlider}/>
+            <PageController currentPosition={currentStep.current} positions={stepCount} callback={moveSlider}/>
         </div>
     )
 }

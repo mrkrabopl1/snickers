@@ -3,22 +3,28 @@ import SearchWithList from 'src/modules/searchWithList/SearchWithList'
 import SettingsModule from 'src/modules/settingsModule/SettingsModule'
 import Button from 'src/components/Button'
 import MerchSliderField from 'src/modules/merchField/MerchFieldWithPageSwitcher'
-import { imgImport, getImgs, getImg } from "src/providers/imgProvider"
-import { getFullMerchInfo,getFullMerchInfoByFilters } from "src/providers/searchProvider"
+import { getMerchOnPage,getFullMerchInfoByFilters } from "src/providers/searchProvider"
 import Menu from "src/modules/menu/Menu"
 import s from "./style.module.css"
 import { useAppDispatch } from 'src/store/hooks/redux'
+import {searchNames} from "src/providers/searchProvider"
 import {show,sticky,shopAction} from 'src/store/reducers/menuSlice'
 import {ReactComponent as FoureGrid}  from 'src/../public/foureGrid.svg';
 import {ReactComponent as SixGrid}  from 'src/../public/sixGrid.svg';
-
+import { useLocation } from 'react-router-dom';
 const SearchPage: React.FC<any> = () => {
     let [searchData, setSearchData] = useState<string | null>(null)
+    const {state} = useLocation();
 
+    useEffect(()=>{
+        if(state){
+            searchNames(state,5,setMerchFieldData)
+        }
+    })
     let [updateData,setUpdateData] =  useState<boolean>(true)    
     let currentPage = useRef<number>(1)
     let pages = useRef<number>(1)
-    let pageSize= useRef<number>(4)
+    let pageSize= useRef<number>(6)
 
     let [filtersState,setFilters] = useState<any>([])
     let [merchFieldData, setMerchFieldData] = useState<any>([])
@@ -55,8 +61,7 @@ const SearchPage: React.FC<any> = () => {
         filtersInfo.current["name"] = searchWord.current
         filtersInfo.current["currentPage"] =  currentPage.current;
         filtersInfo.current["pageSize"] =  pageSize.current;
-        filtersInfo.current["pages"] =  pages.current;
-        getFullMerchInfo(filtersInfo.current,getRespData) 
+        getMerchOnPage(filtersInfo.current,getRespData) 
     }
     let [showSettings,setShowSettings] = useState<boolean>(false)
     
@@ -113,8 +118,7 @@ const SearchPage: React.FC<any> = () => {
 
     let styleData = {
         main:s.main,
-        dropList:s.drop_list,
-
+        dropList:s.drop_list
     }
 
 
@@ -162,7 +166,7 @@ const SearchPage: React.FC<any> = () => {
         filtersInfo.current["currentPage"] =  currentPage.current;
         filtersInfo.current["pageSize"] =  pageSize.current;
         filtersInfo.current["pages"] =  pages.current;
-        getFullMerchInfo(filtersInfo.current,getRespData) 
+        getMerchOnPage(filtersInfo.current,getRespData) 
     }
 
 
@@ -171,7 +175,7 @@ const SearchPage: React.FC<any> = () => {
 
         <div ref={pageWrap}  onWheel={(e)=>manipulateMenu(e)}>
             <div  style={{  position:"relative"}}>
-                    <SearchWithList className={styleData} searchCallback={searchCallback} onDataRecieve={setSearchData} />
+                    <SearchWithList val={state} className={styleData} searchCallback={searchCallback} onDataRecieve={setSearchData} />
                     <MerchSliderField onChange={pageChange} currentPage = {currentPage.current}  pages={pages.current} heightRow={500} size={grid?2:3} data={merchFieldData} />
                     <div  onClick={()=>{
                         setGrid(!grid)

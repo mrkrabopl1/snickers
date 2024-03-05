@@ -7,6 +7,7 @@ import radioReducer from "./reducers/radioSlice"
 import priceReducer from "./reducers/priceSlice"
 import secondDropReducer from "./reducers/secondDropSlice"
 import menuReducer from "./reducers/menuSlice"
+import searchReducer from "./reducers/searchSlice"
 import listenerMiddleware from "./listenerMiddleware"
 const rootReducer = combineReducers({
     fieldReducer,
@@ -16,7 +17,8 @@ const rootReducer = combineReducers({
     radioReducer,
     priceReducer,
     secondDropReducer,
-    menuReducer
+    menuReducer,
+    searchReducer
 })
 export const setupStore = () =>{
     return configureStore({

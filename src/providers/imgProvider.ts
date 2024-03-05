@@ -53,11 +53,11 @@ const getImg = function (id: string, callback: (val: any) => void) {
 const getImgs = function (name: string, callback: (val: any) => void) {
     axios({
         method: 'get',
-        url: 'http://127.0.0.1:5000/images'+"?"+"name="+name,
+        url: 'http://127.0.0.1:8100/snickersByLine'+"?"+"name="+name,
         headers: {}
     }
     ).then((res:any)=>{
-        console.log(res.data,"klklj")
+        console.log(res,"klklj")
         callback(res.data)
     })
 }

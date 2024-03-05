@@ -5,14 +5,14 @@ import { useNavigate } from 'react-router-dom';
 import global from "src/global.css"
 
 
-interface merchInterface { name: string, imgs: string,id:string,firm:string,price:string }
+interface merchInterface { name: string, img: string,id:string,firm:string,price:string }
 
 const MerchLine: React.FC<{ data: merchInterface}> = (props) => {
     let { data } = { ...props }
     const navigate = useNavigate();
     return (
-        <div onClick={()=>navigate('product/' + data.id)} className={s.merchLine}>
-             <img className={s.img} style={{width:"30%" ,flexShrink:0 }} src={data.imgs[0]} alt="" />
+        <div onClick={()=>navigate('/product/' + data.id)} className={s.merchLine}>
+             <img className={s.img} style={{width:"30%" ,flexShrink:0 }} src={data.img} alt="" />
                             <div>
                                 <p>
                                     {data.firm}

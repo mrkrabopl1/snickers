@@ -6,13 +6,14 @@
     top: 0;
     z-index: 200;
     left: 0;
-    background-color: rgba(210, 68, 85, 0.8);
+    background-color: rgba(210, 68, 85, 0.2);
+    backdrop-filter: blur(2px);
 }
 
 .none{
     display: none;
 }
-.modalWrap{
+.modalWrap1{
     position: absolute;
     width: 75%;
     margin: auto;
@@ -22,6 +23,18 @@
     bottom: 0;
     height: 60%;
     padding: 5px;
+    font-family: 'Open Sans', 'Helvetica Neue', 'Segoe UI', 'Calibri', 'Arial', sans-serif;
+}
+
+.modalWrap{
+    position: absolute;
+    width: 100%;
+    top: 0;
+    right:0;
+    left:0;
+    bottom: 0;
+    height: 100px;
+    background-color: white;
     font-family: 'Open Sans', 'Helvetica Neue', 'Segoe UI', 'Calibri', 'Arial', sans-serif;
 }
 

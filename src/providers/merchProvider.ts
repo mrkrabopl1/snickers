@@ -12,13 +12,14 @@ const getMerchPrice = function (name: string, callback: (val: any) => void) {
     })
 }
 
-const getMerchInfo = function (name: string, callback: (val: any) => void) {
+const getMerchInfo = function (id: string, callback: (val: any) => void) {
     axios({
         method: 'get',
-        url: 'http://127.0.0.1:5000/merchInfo'+"?"+"name="+name,
+        url: 'http://127.0.0.1:8100/snickersInfo'+"?"+"id="+id,
         headers: {}
     }
     ).then((res:any)=>{
+        console.log(res.data)
         callback(res.data)
     })
 }
@@ -61,7 +62,7 @@ const getMainInfo = function (callback: (val: any) => void) {
 const getSizeTable = function (callback: (val: any) => void) {
     axios({
         method: 'get',
-        url: 'http://127.0.0.1:5000/sizeTable',
+        url: 'http://127.0.0.1:8100/sizeTable',
         headers: {}
     }
     ).then((res:any)=>{

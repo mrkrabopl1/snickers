@@ -18,7 +18,7 @@ const ComplexDropMenu: React.FC<MerchMenuInterface> = (props) => {
         <div className={className}>
 
              <Menu/>
-             <ComplexDrop data={complexDropData}/>
+             <ComplexDrop onChange={()=>{}} data={complexDropData}/>
 
         </div>
     )

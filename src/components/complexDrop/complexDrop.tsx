@@ -9,7 +9,8 @@ interface dataInterface {
 }
 
 interface propsType {
-    data: dataInterface
+    data: dataInterface,
+    onChange:()=>void
 }
 
 
@@ -48,7 +49,7 @@ const ComplexDrop: React.FC<propsType> = (props) => {
             arr.push(
                 <div
                     className={s.mainElem}
-                    onMouseLeave={() => { setChosen(val); timeoutRef.current = setTimeout(() => { console.log("gfd"); setShowDrop(false) }, 100) }}
+                    onMouseLeave={() => { setChosen(val); timeoutRef.current = setTimeout(() => {setShowDrop(false) }, 100) }}
                     onMouseEnter={() => {
                             if (timeoutRef.current) {
                                 clearTimeout(timeoutRef.current);

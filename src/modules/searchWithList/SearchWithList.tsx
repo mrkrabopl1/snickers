@@ -12,7 +12,9 @@ type propsRowType = {
 
     },
     searchCallback:(...args: any) => void | null,
-    onDataRecieve: (...args: any) => void | null,
+    onDataRecieve?: (...args: any) => void ,
+    onChange?: (...args: any) => void ,
+    val?:string
 }
 const defaultStyle: any = {
     border: "2px solid blue",
@@ -27,12 +29,12 @@ let obj = { name: "string", imgs: "string",id:"string",firm:"string",price:"stri
 
 const SearchWithList: React.FC<propsRowType> = (props) => {
     let trottlingTimerId = useRef<ReturnType<typeof setTimeout> | null>(null)
-    let { className,onDataRecieve,searchCallback } = { ...props }
+    let { val,className,onDataRecieve,searchCallback, onChange } = { ...props }
     let [dropDownListData, setDropDownList] = useState<ReactElement[]>([])
     let mainRef = useRef<HTMLDivElement|null>(null)
 
     const createDropList: (data: any) => void = (data) => {
-        onDataRecieve(data)
+        onDataRecieve && onDataRecieve(data)
         setDropDownList( data.map((value:any) =>
         {
             return <MerchLine data={value}/>    
@@ -43,6 +45,15 @@ const SearchWithList: React.FC<propsRowType> = (props) => {
 
     let [activeList,setActive] = useState<boolean>(true)
 
+
+    const onFocus=()=>{
+        setActive(true)
+    }
+    const onBlur=()=>{
+        setActive(false)
+    }
+
+
     const seatchProxy=(data:any)=>{
         setActive(false)
         searchCallback(data)
@@ -50,7 +61,7 @@ const SearchWithList: React.FC<propsRowType> = (props) => {
 
     return (
         <div ref={mainRef} style = {{ position:"relative"}} className={className ? className.main : ""}>
-            <Search searchCallback={seatchProxy} onDataRecieve={createDropList}>
+            <Search val={val} onChange={onChange} onBlur={onBlur} onFocus={onFocus} searchCallback={seatchProxy} onDataRecieve={createDropList}>
 
             </Search>
             <DropDownList  className={className ? className.dropList : ""} active={activeList}>

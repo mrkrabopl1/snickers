@@ -1,18 +1,30 @@
 import React, { ReactElement, useRef, useState } from 'react'
 
 type propsRowType = {
-    onChange:(...args:any)=>void|null
-    className?:string,
-    placeholder?:string
+    onChange: (...args: any) => void | null
+    onFocus?: (...args: any) => void
+    onBlur?: (...args: any) => void
+    className?: string,
+    placeholder?: string,
+    val?: string
 }
 
 
 
 const Input: React.FC<propsRowType> = (props) => {
-    const inputRef =  useRef(null)
-    let {onChange,className,placeholder} = {...props}
+    const inputRef = useRef(null)
+    let { onChange,onFocus,onBlur, className, placeholder, val } = { ...props }
     return (
-        <input placeholder={placeholder?placeholder:""} style={{boxSizing:'border-box',width:"100%"}} className={className} ref={inputRef} type='text' onChange={(e)=>{if(onChange){onChange(e.target.value)}}}/>
+        <input
+            value={val}
+            placeholder={placeholder ? placeholder : ""}
+            style={{ boxSizing: 'border-box', width: "100%" }}
+            className={className} ref={inputRef}
+            type='text'
+            onChange={(e) => { if (onChange) { onChange(e.target.value)}}}
+            onFocus={(e) => { if (onFocus) { onFocus(e.target.value)}}}
+            onBlur ={(e) => { if (onBlur) { onBlur(e.target.value)}}}
+        />
     )
 }
 
