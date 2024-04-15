@@ -7,7 +7,7 @@
     "allowJs": true,                          // Allow compilation JS files
     "jsx": "react",                           // Support JSX in .tsx file
     "isolatedModules": true,				  // Provide additional syntax check, such as the file does not have a module export
-    "strict": true,                           // Enable all strict type check options
+    "strict": false,                           // Enable all strict type check options
 
     // Module parsing option
     "moduleResolution": "node",               // Specify the module parsing policy

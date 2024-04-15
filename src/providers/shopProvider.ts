@@ -2,13 +2,26 @@ import axios from "axios";
 
 
 
-const getCartData = function (cartData:{[key:string]:number}, callback: (val: any) => void) {
+const getCartData = function (cartHash:any, callback: (val: any) => void) {
     const data = new FormData();
-    let json = JSON.stringify(cartData)
-    console.debug(json)
+    axios({
+        method: 'get',
+        url: 'http://127.0.0.1:8100/getCartData?hash='+cartHash,
+        headers: {}
+    }
+    ).then((res:any)=>{
+        console.log(res.data)
+        callback(res.data)
+    },(error)=>{
+        console.warn(error)
+    })
+}
+
+const deleteCartData = function (preorderId, callback: (val: any) => void) {
+    let json = JSON.stringify({preorderId})
     axios({
         method: 'post',
-        url: 'http://127.0.0.1:5000/getCartData',
+        url: 'http://127.0.0.1:8100/deleteCartData',
         headers: {
             'Content-Type': 'application/json'
         },
@@ -24,4 +37,4 @@ const getCartData = function (cartData:{[key:string]:number}, callback: (val: an
 
 
 
-export { getCartData }
+export { getCartData, deleteCartData }

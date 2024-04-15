@@ -9,15 +9,14 @@ import {ReactComponent as Cart} from "/public/cart.svg";
 import global from "src/global.css"
 const BuyButton: React.FC<any> = (props) => {
 
-    const {shop} = useAppSelector(state =>state.menuReducer)
-    let length = Object.keys(shop).length
+    const {cartCount} = useAppSelector(state =>state.menuReducer)
     return(
         <div style={{display:"flex"}}>
             <NavLink to="/buy" className={global.link} >
                 <div>
                      <Cart/>
-                     <div className={s.shopCounter} style={length?{position:"absolute"}:{display:"none"}}>
-                       <span className={s.spanShop}>{length}</span>
+                     <div className={s.shopCounter} style={cartCount?{position:"absolute"}:{display:"none"}}>
+                       <span className={s.spanShop}>{cartCount}</span>
                      </div>
                 </div>
                     

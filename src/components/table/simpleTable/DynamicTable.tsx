@@ -5,7 +5,8 @@ import { useAppSelector, useAppDispatch } from 'src/store/hooks/redux'
 import DynamicElement from 'src/components/dynamicElement/DynamicElement'
 
 type dinamicElementType = {
-    componentName:string,propsData:any
+    componentName:string,
+    propsData:any
 }
 
 
@@ -18,26 +19,21 @@ type sortedType = {
 }
 
 type tableType = {
-    table: [
-        {
-            title: string,
-            subtitle?: string,
-            table:  dinamicElementType[] | string[]
-        }
-    ],
+    table: ( dinamicElementType | string)[][],
+    headers:string[]
 
     className?:string
 }
 
 const DynamicTable: React.FC<tableType> = (props) => {
-    let { table,  className } = { ...props }
+    let { table,  className, headers } = { ...props }
 
     
     function createHeaders() {
-        let headerArr = table.map((val, id) => {
+        let headerArr = headers.map((val, id) => {
             return <th>
                 <div>
-                    <span>{val.title}</span>
+                    <span>{val}</span>
                 </div>
             </th>
         })
@@ -49,21 +45,20 @@ const DynamicTable: React.FC<tableType> = (props) => {
     function createTables() {
         let tableArr = []
         if(table.length){
-            for (let i = 0; i < table[0].table.length; i++) {
-    
+            for (let i = 0; i < table.length; i++) {
                 tableArr.push(<tr>
-                    {createTableRow(i)}
+                    {createTableRow(table[i])}
                 </tr>)
             }
         }
         return tableArr
     }
     
-    function createTableRow(index:number){
+    function createTableRow(elems: (dinamicElementType | string)[]){
         let rowArr = []
-        for (let i = 0; i < table.length; i++) {
-            let val = table[i].table[index]
-            if(typeof val === "string" ){
+        for (let i = 0; i < elems.length; i++) {
+            let val = elems[i]
+            if(typeof val === "string" ||  typeof val === "number"){
                 rowArr.push(<td>{val}</td>)
             }else{
                 rowArr.push(<td>{<DynamicElement {...val}/>}</td>)

@@ -5,7 +5,7 @@ import s from "./style.module.css"
 import global from "src/global.css"
 
 
-interface merchInterface { name: string, imgs: string[], id: string }
+interface merchInterface { name: string, imgs: string[], id: string , price:string}
 
 const MerchField: React.FC<{ size: number, data: merchInterface[] }> = (props) => {
     let { data, size } = { ...props }

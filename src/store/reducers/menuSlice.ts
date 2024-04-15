@@ -1,16 +1,26 @@
 import {createSlice} from "@reduxjs/toolkit"
 import dropFileType from '../../types/dropFile'
 
+
+
+type SizeType ={
+    [key:string]:number
+}
 interface IField {
     show: boolean,
     sticky:boolean,
-    shop:{[key:string]:number}
+    shop:{
+        id:number,
+        size:string
+    }[],
+    cartCount:number
 }
 
 const initialState:IField  ={
    show:true,
    sticky:true,
-   shop: localStorage.shopData?JSON.parse(localStorage.shopData):{}
+   shop: [],
+   cartCount:0
 }
 
 const menuSlice = createSlice({
@@ -24,12 +34,15 @@ const menuSlice = createSlice({
             state.sticky = action.payload
         },
         shopAction(state,action){
-            state.shop = {...action.payload}
+            state.shop =[...action.payload]
+        },    
+        cartCountAction(state,action){
+            state.cartCount =action.payload
         },    
     }
 
 });
 
-export  const {  show, sticky, shopAction } = menuSlice.actions
+export  const {  show, sticky, shopAction, cartCountAction } = menuSlice.actions
 
 export default menuSlice.reducer

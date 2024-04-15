@@ -12,18 +12,19 @@ let styleWrapper:any = {
 type ZoneSliderSetterType= {
     min:number,
     max:number,
-    onChangeLeft?:(...args:any)=>void|null,
-    onChangeRight?:(...args:any)=>void|null,
+    onChange?:(...args:any)=>void|null,
     memo?:boolean
 }
 
-const  ZoneSliderSimple: React.FC<ZoneSliderSetterType>= ({min,max, onChangeLeft, onChangeRight}) => {
+const  ZoneSliderSimple: React.FC<ZoneSliderSetterType>= ({min,max, onChange}) => {
 
     let wrappRef = useRef<HTMLDivElement>(null)
     let sliderRefRight = useRef<HTMLDivElement>(null)
     let sliderRefLeft = useRef<HTMLDivElement>(null)
     let activeLeft = useRef(false)
     let activeRight = useRef(false)
+    let sliderLeftData = useRef<number>(min)
+    let sliderRightData = useRef<number>(max)
 
     useEffect(()=>{
         if( wrappRef.current){
@@ -76,23 +77,27 @@ const  ZoneSliderSimple: React.FC<ZoneSliderSetterType>= ({min,max, onChangeLeft
             if(wrappRef.current){
                 if(activeLeft.current && sliderRefLeft.current){
                     let left = wrappRef.current.getBoundingClientRect().left
-                    let leftPos = Math.max(Math.min((pos - left - sliderRefLeft.current.clientWidth/2),wrappRef.current.clientWidth-sliderRefLeft.current.clientWidth),min);
+                    let leftPos = Math.max(Math.min((pos - left - sliderRefLeft.current.clientWidth/2),wrappRef.current.clientWidth-sliderRefLeft.current.clientWidth),0);
                     setSliderPositionLeft(leftPos)
+                    sliderLeftData.current = (leftPos)/(wrappRef.current.clientWidth-sliderRefLeft.current.clientWidth);
                     if(leftPos>=sliderPositionRight){
                         setSliderPositionRight(leftPos)
-                        if(onChangeRight)onChangeRight((leftPos)/(wrappRef.current.clientWidth-sliderRefLeft.current.clientWidth))
+                        sliderRightData.current = sliderLeftData.current;
                     }
-                    if(onChangeLeft)onChangeLeft((leftPos)/(wrappRef.current.clientWidth-sliderRefLeft.current.clientWidth))
+                    if(onChange)onChange(sliderLeftData.current, sliderRightData.current)
                 }
                 if(activeRight.current && sliderRefLeft.current){
                     let left = wrappRef.current.getBoundingClientRect().left
-                    let rightPos = Math.max(Math.min((pos - left - sliderRefLeft.current.clientWidth/2),wrappRef.current.clientWidth-sliderRefLeft.current.clientWidth),min)
+                    console.debug(left,  wrappRef.current.getBoundingClientRect().left)
+                    let rightPos = Math.max(Math.min((pos - left - sliderRefLeft.current.clientWidth/2),wrappRef.current.clientWidth-sliderRefLeft.current.clientWidth),0)
                     setSliderPositionRight(rightPos)
+                    sliderRightData.current = (rightPos)/(wrappRef.current.clientWidth-sliderRefLeft.current.clientWidth);
                     if(rightPos<=sliderPositionLeft){
                         setSliderPositionLeft(rightPos)
-                        if(onChangeLeft)onChangeLeft((rightPos)/(wrappRef.current.clientWidth-sliderRefLeft.current.clientWidth))
+                        sliderLeftData.current = sliderRightData.current;
+
                     }
-                    if(onChangeRight)onChangeRight((rightPos)/(wrappRef.current.clientWidth-sliderRefLeft.current.clientWidth))
+                    if(onChange)onChange(sliderLeftData.current, sliderRightData.current);
                 }
                 
             }

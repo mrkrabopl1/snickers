@@ -37,11 +37,15 @@ const getBrends = function (callback: (val: any) => void) {
 
 
 
-const getCollections = function (name:string,callback: (val: any) => void) {
+const getCollections = function (collection:any,callback: (val: any) => void) {
+    let json = JSON.stringify(collection)
     axios({
-        method: 'get',
-        url: 'http://127.0.0.1:5000/collections'+"?"+"name="+name,
-        headers: {}
+        method: 'post',
+        url: 'http://127.0.0.1:8100/collection',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        data:json
     }
     ).then((res:any)=>{
         callback(res.data)

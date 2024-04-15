@@ -9,6 +9,7 @@ interface merchInterface {
     name: string,
     imgs: string[],
     id: string,
+    price:string,
     className?: string
 }
 interface merchFieldInterface {

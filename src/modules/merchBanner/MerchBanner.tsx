@@ -1,6 +1,6 @@
 import React, { useEffect, ReactElement, useState, useRef } from 'react'
 
-import ComplexDrop from "src/components/complexDrop/complexDrop"
+import ComplexDrop from "src/components/complexDrop/ComplexDrop"
 import { imgImport, getImgs, getImg, } from "src/providers/imgProvider"
 import { getMainInfo } from "src/providers/merchProvider"
 import { useAppSelector } from 'src/store/hooks/redux'

@@ -2,7 +2,6 @@ import React, { ReactElement, useEffect, useRef, useState } from 'react'
 import PricesBlock from './PricesBlock'
 import s from "./style.module.css"
 import {useAppSelector} from 'src/store/hooks/redux'
-import RadioHolder from 'src/components/radioHolder/RadioHolder'
 import merchType from 'src/types/merchType'
 
 

@@ -1,14 +1,15 @@
-import React, { lazy,Suspense,ReactElement, useRef,useEffect, useState } from 'react'
+import React, { lazy,Suspense,ReactElement, useRef,useEffect, useState, memo } from 'react'
 import DropWrapper from "../../components/dropWrapper/DropWrapper"
 import s from "./style.module.css"
 import {useAppDispatch } from 'src/store/hooks/redux'
 import {secondDropSlice} from "src/store/reducers/secondDropSlice"
 import { useAppSelector } from 'src/store/hooks/redux'
+import {isDeepEqual} from 'src/global'
 
 type propsRowType = {
     propsData:any,
     componentName:string,
-    onChange?:(arg:any)=>void
+    onChange?:(arg:any)=>void,
 }
 
 
@@ -29,5 +30,8 @@ const DynamicElement: React.FC<propsRowType> = (props) => {
       </Suspense>
     );
 }
+function checkMemo(oldData: any, newData: any) {
+  return (isDeepEqual(oldData.propsData, newData.propsData))
+}
 
-export default DynamicElement
+export default  memo(DynamicElement,checkMemo)

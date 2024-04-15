@@ -6,8 +6,6 @@ listenerMiddleware.startListening({
     actionCreator: shopAction,
     effect: async (action, listenerApi) => {
       console.debug(action,listenerApi)
-
-      localStorage.setItem('shopData', JSON.stringify(action.payload));
     },
   })
 

@@ -33,7 +33,7 @@ const DynamicForm: React.FC<dynamicFormType> = (props) => {
     }
 
     return (
-        <div >
+        <div  >
             {form.map((val)=>{
                 return(<div>
                     <p>

@@ -73,6 +73,7 @@ const Menu: React.FC<any> = (props) => {
     }
 
     const searchCallback = (text: string) => {
+        setActive(false)
         navigate('/settingsMenu', {state:text});
     }
 
@@ -103,14 +104,11 @@ const Menu: React.FC<any> = (props) => {
 
             <div style={{ margin: "auto 20px", display: "flex", position: "relative" }}>
                 <Loupe onClick={() => setActive(true)} className={global.link} height={"24px"} width={"24px"} />
-                <NavLink to="/home" className={global.link} >Home</NavLink>
-                <NavLink to="/services" className={global.link} >Услуги</NavLink>
-
                 <BuyButton />
 
             </div>
 
-            <Modal setActive={() => { }} active={active}>
+            <Modal onChange={setActive} active={active}>
                 <SearchWithList
                     onChange={(val) => { dispatch(setSearchData(val)) }}
                     className={styleData}

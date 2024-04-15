@@ -29,6 +29,48 @@ const searchNames = function (searchName:string,max:number,callback:(val:any)=>v
         console.warn(error)
     })
 }
+const searchSnickersByString = function (searchName:string,callback:(val:any)=>void, page:number,size:number, filters:any){
+
+    axios({
+        method: 'post',
+        url: 'http://127.0.0.1:8100/searchSnickersByString',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        data:JSON.stringify({
+            name:searchName,
+            page:page,
+            size:size,
+            filters:filters
+        })
+    }
+    ).then((res:any)=>{
+        console.debug(res.data)
+       callback(res.data)
+    },(error)=>{
+        console.warn(error)
+    })
+}
+
+const test = function (){
+
+    axios({
+        method: 'post',
+        url: 'http://127.0.0.1:8100/test',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        data:JSON.stringify({
+            sizes:[10,11],
+        })
+    }
+    ).then((res:any)=>{
+        console.debug(res.data)
+    },(error)=>{
+        console.warn(error)
+    })
+}
+
 type dataType = {price:number[],sizes:number[]}
 
 
@@ -85,4 +127,4 @@ const getFilters = function (callback:(data:dataType)=>void){
     })
 }
 
-export {searchImport,searchNames,getFilters,getMerchOnPage,getFullMerchInfoByFilters}
+export {searchImport,searchNames,getFilters,getMerchOnPage,getFullMerchInfoByFilters,searchSnickersByString, test}

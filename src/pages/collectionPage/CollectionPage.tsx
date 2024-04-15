@@ -9,10 +9,12 @@ type urlParamsType = {
 const CollectionPage: React.FC<any> = () => {
     let {collection} = useParams<urlParamsType>();
 
+    console.debug(collection)
+
     let [updateData,setUpdateData] =  useState<boolean>(true)    
     let currentPage = useRef<number>(1)
     let pages = useRef<number>(1)
-    let pageSize= useRef<number>(4)
+    let pageSize= useRef<number>(9)
 
     let [filtersState,setFilters] = useState<any>([])
     let [merchFieldData, setMerchFieldData] = useState<any>([])
@@ -39,8 +41,13 @@ const CollectionPage: React.FC<any> = () => {
 
 
     useEffect(()=>{
-        getCollections(collection?collection:"",getRespData) 
-    },[])
+        const reqData = {
+            name:collection,
+            page:pages.current,
+            size:pageSize.current
+        }
+        getCollections(reqData,getRespData) 
+    },[collection])
     
 
     const pageWrap = useRef<HTMLDivElement>(null)

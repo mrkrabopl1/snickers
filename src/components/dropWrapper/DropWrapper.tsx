@@ -15,10 +15,9 @@ const DropWrapper: React.FC<propsRowType> = (props) => {
     return (
         <div style={{height:"100%",position:"relative",overflow: "hidden"}}  >
                {children[0]}
-               <div className={s.secondPage} style={data.show?{left:0}:{left:"100%"}}>
+               {data.show? <div className={s.secondPage} style={data.show?{left:0}:{left:"100%"}}>
                 {children[1]}
-               </div>
-
+               </div>:null}
         </div>
     )
 }

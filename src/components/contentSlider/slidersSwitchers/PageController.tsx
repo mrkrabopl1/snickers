@@ -15,6 +15,9 @@ const PageController: React.FC<ContentSliderType> = (data) => {
     const { seenPage, currentPosition, positions, callback } = { ...data }
     let seenElement = seenPage ? seenPage : 3;
     let [active,setActive]  = useState<number>(currentPosition)
+    useEffect(()=>{
+        setActive(currentPosition)
+    },[currentPosition])
     const createPage = (currentPosition: number, positions: number) => {
         let arr = [];
         let count = 1;
@@ -56,7 +59,6 @@ const PageController: React.FC<ContentSliderType> = (data) => {
     const leftFunc = ()=>{
         if(active>1){
             callback(active-1)
-            setActive(active-1)
         }
     }
 
@@ -64,7 +66,6 @@ const PageController: React.FC<ContentSliderType> = (data) => {
     const rightFunc = ()=>{
         if(active<positions){
             callback(active+1)
-            setActive(active+1)
         }
     }
 

@@ -7,14 +7,11 @@ import global from "src/global.css"
 interface dataInterface {
     [key: string]: string[];
 }
-
+type changeType = {main?:string,sub?:string}
 interface propsType {
     data: dataInterface,
-    onChange:()=>void
+    onChange:(data:changeType)=>void
 }
-
-
-
 
 let animateDropStyle: any = {
     display: "block",
@@ -28,9 +25,11 @@ let animateDropStyle: any = {
 const ComplexDrop: React.FC<propsType> = (props) => {
     let mainRef = useRef(null)
 
-    
+    const inputRef = useRef<HTMLDivElement[]>([]);
     let dispatch = useAppDispatch()
-    let { data } = { ...props }
+    let { data, onChange } = { ...props }
+
+    let leftPos = useRef<number>(0)
 
     let [showDrop, setShowDrop] = useState<boolean>(false)
     let [chosen, setChosen] = useState<string | null>(null)
@@ -45,15 +44,18 @@ const ComplexDrop: React.FC<propsType> = (props) => {
     const createCont = () => {
         let arr: any = []
 
-        Object.keys(data).forEach((val) => {
+        Object.keys(data).forEach((val,indx) => {
             arr.push(
-                <div
+                <div 
+                    onClick={()=>{onChange({main:val})}}
+                    ref={el => inputRef.current[indx] = el} 
                     className={s.mainElem}
                     onMouseLeave={() => { setChosen(val); timeoutRef.current = setTimeout(() => {setShowDrop(false) }, 100) }}
                     onMouseEnter={() => {
                             if (timeoutRef.current) {
                                 clearTimeout(timeoutRef.current);
                             }
+                            leftPos.current =inputRef.current[indx].offsetLeft
                             setChosen(val);
                             setShowDrop(true)
                     }}>
@@ -70,7 +72,7 @@ const ComplexDrop: React.FC<propsType> = (props) => {
             let dropData = data[chosen]
             if (dropData.length > 0) {
                 dropData.forEach((val) => {
-                    arr.push(<div onClick={()=>{dispatch(setName(val))}} >{val}</div>)
+                    arr.push(<div onClick={()=>{onChange({sub:val})}} >{val}</div>)
                 })
                 // setShowDrop(true)
             } else {
@@ -85,9 +87,9 @@ const ComplexDrop: React.FC<propsType> = (props) => {
         <div ref={mainRef} className={s.complexDrop} >
             {createCont()}
             <div 
-            onMouseEnter={() => { clearTimeout(timeoutRef.current); console.log("ou2t") }}
+            onMouseEnter={() => { clearTimeout(timeoutRef.current) }}
             onMouseLeave={()=>{setShowDrop(false)} }
-             style={showDrop ? animateDropStyle : { display: "none" }} className='dropField' >
+             style={showDrop ? {left:leftPos.current+"px"} : { display: "none" }} className={s.dropField} >
                 {createDropContent()}
             </div>
         </div>

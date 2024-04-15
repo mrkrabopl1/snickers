@@ -1,6 +1,6 @@
 import React, { ReactElement, useRef, useState } from 'react'
 import {searchNames} from "src/providers/searchProvider"
-import Input from '../Input'
+import Input from '../input/Input'
 import loupe from "../../../public/loupe.svg";
 import s from "./style.module.css"
 
@@ -23,7 +23,12 @@ const defaultStyle: any = {
 const Search: React.FC<propsRowType> = (props) => {
     let trottlingTimerId = useRef<ReturnType<typeof setTimeout> | null>(null)
     let { val,className, onDataRecieve,searchCallback, onChange,onBlur,onFocus } = { ...props }
-    let text = useRef<string>("")
+    let text = useRef<string>(val?val:"")
+    const handleEnter =(e:React.KeyboardEvent<HTMLDivElement>) =>{
+        if (e.key === 'Enter') {
+            searchCallback(text.current);
+        }
+    }
     const createSearchRequest = (val: string) => {
         onChange && onChange(val);
         text.current = val;
@@ -36,7 +41,7 @@ const Search: React.FC<propsRowType> = (props) => {
     }
 
     return (
-        <div className={className ? className : s.search}>
+        <div onKeyUp={handleEnter} className={className ? className : s.search}>
             <Input val={val} onBlur={onBlur} onFocus={onFocus} className={s.input} onChange={createSearchRequest}>
             </Input>
             <img onClick={()=>searchCallback(text.current)} className={s.img} src={loupe} alt="" />

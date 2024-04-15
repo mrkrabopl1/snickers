@@ -27,31 +27,36 @@ const ZoneSliderValueSetter: React.FC<ZoneSliderSetterType> = ({onChange, max, m
 
     let wrappRef = useRef<HTMLDivElement>(null)
     let sliderRef = useRef(null)
-    let active = useRef(false)
     let [sliderPosition, setSliderPosition] = useState(0)
+    let trottlingTimerId = useRef<ReturnType<typeof setTimeout> | null>(null)
+    let [refresh, setRefresh] = useState<boolean>(true)
+    let active = useRef(refresh)
+    let [test, setTest] = useState<string>("true")
+    let numDataLeft = useRef<number>(dataLeft?dataLeft:min)
+    let numDataRight = useRef<number>(dataRight?dataRight:max)
 
-    let [numDataLeft, changeLeftNumData] = useState<number>(min)
-    let [numDataRight, changeRightNumData] = useState<number>(max)
+    active.current = refresh
 
     useEffect(() => {
         if (dataRight && dataRight <= max && dataRight >= min) {
             if (dataLeft) {
                 if (dataRight > dataLeft) {
-                    changeRightNumData(dataRight)
+                    numDataRight.current = dataRight;
                 }
             } else {
-                changeRightNumData(dataRight)
+                numDataRight.current = dataRight;
             }
         }
         if (dataLeft && dataLeft <= max && dataLeft >= min) {
             if (dataRight) {
                 if (dataRight > dataLeft) {
-                    changeLeftNumData(dataLeft)
+                    numDataLeft.current = dataLeft;
                 }
             } else {
-                changeLeftNumData(dataLeft)
+                numDataLeft.current = dataLeft;
             }
         }
+        setRefresh(!refresh);
     },[])
 
     
@@ -67,44 +72,53 @@ const ZoneSliderValueSetter: React.FC<ZoneSliderSetterType> = ({onChange, max, m
         margin: "auto"
     }
 
-    const convertSliderPosLeft = (sliderPosLeft:number) => {
-        changeLeftNumData(min + (max-min)*sliderPosLeft)
+    const convertSliderPos = (sliderPosLeft:number,sliderPosRight:number) => {
+        numDataLeft.current =(min + (max-min)*sliderPosLeft)
+        numDataRight.current= (min + (max-min)*sliderPosRight)
+        refresh = !refresh
+        setRefresh(refresh)
+        if (trottlingTimerId.current) {
+            clearTimeout(trottlingTimerId.current);
+        }
+        trottlingTimerId.current = setTimeout(() => {
+            onChange && onChange([ numDataLeft.current, numDataRight.current])
+        }, 500)
     }
-    const convertSliderPosRight = (sliderPosRight:number) => {
-        changeRightNumData(min + (max-min)*sliderPosRight)
-    }
+   
 
     const changeLeftData=(data:number)=>{
-            if(data>numDataRight||data<min){
+            if(data>numDataRight.current||data<min){
                 
             }else{
                 memoSlider.current = !memoSlider.current;
-                changeLeftNumData(data);
+                numDataLeft.current = data;
+                setRefresh(!refresh)
                 if(onChange){
-                    onChange([data,numDataRight])
+                    onChange([data,numDataRight.current])
                 }
             }
     }
 
     const changeRightData=(data:number)=>{
-        if(data<numDataLeft||data>max){
+        if(data<numDataLeft.current||data>max){
             
         }else{
             memoSlider.current = !memoSlider.current;
-            changeRightNumData(data);
+            numDataRight.current = data;
+            setRefresh(!refresh)
             if(onChange){
-                onChange([numDataLeft,data])
+                onChange([numDataLeft.current,data])
             }
         }
 }
 
     return (
         <div>
-            <ZoneSliderSimple memo={memoSlider.current} onChangeLeft={convertSliderPosLeft} onChangeRight={convertSliderPosRight} min={(numDataLeft-min) /(max-min)} max={(numDataRight-min) /(max-min)} />
+            <ZoneSliderSimple memo={memoSlider.current} onChange={(min,max)=>{convertSliderPos(min,max)}}  min={(numDataLeft.current-min) /(max-min)} max={(numDataRight.current-min) /(max-min)} />
             <div style={{ display: "flex",width:"100%" }}>
-                <NumInput className={s.numInput} data={numDataLeft} callback={changeLeftData} />
+                <NumInput className={s.numInput} data={numDataLeft.current} callback={changeLeftData} />
                 <span>-</span>
-                <NumInput className={s.numInput} data={numDataRight} callback={changeRightData} />
+                <NumInput className={s.numInput} data={numDataRight.current} callback={changeRightData} />
             </div>
         </div>
     )

@@ -2,23 +2,25 @@ import React, { ReactElement, useRef, useState } from 'react'
 import { useAppSelector, useAppDispatch } from 'src/store/hooks/redux'
 import Checkbox from '../checkbox/Checkbox'
 type columnType = {
-   data:[{enable:boolean,activeData:boolean,name:string}]
+   data:[{enable:boolean,activeData:boolean,name:string}],
+   onChange?:(data:any)=>void
 }
 
 
 
 
 const CheckBoxColumn: React.FC<columnType> = (props) => {
-    let { data} = { ...props }
+    let { data, onChange} = { ...props }
     let dataRef = useRef(data)
-    const onChange  = (id:number,data:true)=>{
-        dataRef.current[id].activeData = data
+    const onChangeForm  = (id:number,active:boolean)=>{
+        dataRef.current[id].activeData = active
+        onChange && onChange({id,active})
     }
     return (
         <div  >
                 {dataRef.current.map((val,id)=>{
                    return( <div style={{display:"flex"}}>
-                        {<Checkbox onChange={onChange.bind(this,id)} enable={val.enable} activeData={val.activeData}/>}
+                        {<Checkbox onChange={onChangeForm.bind(this,id)} enable={val.enable} activeData={val.activeData}/>}
                         <p>{val.name}</p>
                     </div>)
                 })}

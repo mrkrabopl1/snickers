@@ -1,33 +1,28 @@
 import React, { ReactElement, useEffect, useRef, useState } from 'react'
 import Form from "src/modules/sendForm/SendForm"
-import MerchVerticalBuyBlock from "src/modules/merchField/MerchVerticalBuyBlock"
+import MerchFormBlock from "src/modules/merchField/MerchFormBlock"
 import { getCartData } from 'src/providers/shopProvider'
 import s from "./style.module.css"
 import { useAppDispatch, useAppSelector } from 'src/store/hooks/redux'
-import Input from 'src/components/Input'
+import Input from 'src/components/input/Input'
 import Button from 'src/components/Button'
 
 
-interface merchInterface { name: string, imgs: string, id: string, firm: string, price: string }
+interface merchInterface { name: string, img: string, id: string, firm: string, price: string,  count:number }
 
-const BuyMerchField: React.FC = () => {
-    let [recalc, setRecalc] = useState<boolean>(true);
-    let merchData = useRef<merchInterface[]>([]);
+interface  dataType {
+   data:merchInterface[]
+}
+
+const BuyMerchField: React.FC<dataType> = (props) => {
+    let {data} = {...props}
     let promoCode = useRef<string>("")
-    let { shop } = { ...useAppSelector(state => state.menuReducer) }
-    const setMerchBuyBlock = (data: merchInterface[]) => {
-        merchData.current = data
-        setRecalc(recalc => !recalc)
-    }
-    useEffect(() => {
-        getCartData(shop, setMerchBuyBlock)
-    }, [])
     return (
         <div style={{ width:"100%"}}>
 
             {
-                merchData.current.map((data) => {
-                    return <MerchVerticalBuyBlock data={data} onChange={() => { }} />
+                data.map((data) => {
+                    return <MerchFormBlock data={data} onChange={() => { }} />
                 })
             }
 
