@@ -30,8 +30,13 @@ const ZoneSliderValueSetter: React.FC<ZoneSliderSetterType> = ({onChange, max, m
     let [sliderPosition, setSliderPosition] = useState(0)
     let trottlingTimerId = useRef<ReturnType<typeof setTimeout> | null>(null)
     let [refresh, setRefresh] = useState<boolean>(true)
+    useEffect(()=>{
+       memoSlider.current = !memoSlider.current;
+       numDataLeft.current = dataLeft?dataLeft:min
+       numDataRight.current = dataRight?dataRight:max
+       setRefresh(!refresh)
+    },[min,max,dataRight, dataLeft])
     let active = useRef(refresh)
-    let [test, setTest] = useState<string>("true")
     let numDataLeft = useRef<number>(dataLeft?dataLeft:min)
     let numDataRight = useRef<number>(dataRight?dataRight:max)
 

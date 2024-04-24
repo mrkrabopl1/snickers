@@ -29,8 +29,6 @@ const SendForm: React.FC<sendFormModuleInterface> = (props) => {
         mail: "",
         address: "",
         phone: "",
-
-
     })
     let [refresh, setRefresh] = useState<boolean>(false)
 

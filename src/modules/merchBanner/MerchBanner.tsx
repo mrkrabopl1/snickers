@@ -13,27 +13,23 @@ interface   merchBannerInterface  {
     img:string,
     title:string,
     className?:{
-        button:string,
-        title:string
+        button?:string,
+        title?:string,
+        main?:string
     },
     id:string,
     onChange:(arg:string)=>void
 }
 
 const MerchBanner: React.FC< merchBannerInterface> = (props) => {
-
-    let {id,img,title,onChange} = {...props}
-
-
+    let {id,img,title,onChange,className} = {...props}
     const onChangeButton = ()=>{
         onChange(id)
     }
-
-
   
     return (
 
-        <div className={s.wrapper} style = {{display:"flex",backgroundImage:"url('"+img+"')"}}>
+        <div className={className?className.main?className.main:s.main:s.main} style = {{display:"flex",backgroundImage:"url('"+img+"')"}}>
             <div style={{display:"flex", margin:"auto"}}>
                 <p className={s.title}>{title}</p>
                 <Button className={s.buton} onChange={onChangeButton} text={"К колекции"}></Button>

@@ -5,18 +5,17 @@ import { useNavigate } from 'react-router-dom';
 import global from "src/global.css"
 
 
-interface merchInterface { name: string, imgs: string[],id:string, price:string }
+interface merchInterface { name: string, imgs: string[], id: string, price: string, discount?: number }
 
 
 
 
-const MerchBlock: React.FC<{ width:string, data: merchInterface }> = (props) => {
+const MerchBlock: React.FC<{ width: string, data: merchInterface }> = (props) => {
     const navigate = useNavigate();
-    let firstImg = useRef(0)
-    let secondImg = useRef(1)
-    let { data,width } = { ...props }
+    let { data, width } = { ...props }
     let [compOpacity, setOpacity] = useState(0)
 
+    let [compScale, setScale] = useState(0.9)
 
 
     let showAnimation = useRef(false)
@@ -26,10 +25,20 @@ const MerchBlock: React.FC<{ width:string, data: merchInterface }> = (props) => 
         left: 0,
         position: "absolute",
         zIndex: 2,
-        transitionProperty:"opacity, scale",
+        transitionProperty: "opacity, scale",
         transitionDuration: "0.3s",
-        transitionTimingFunction:"ease-out",
-        opacity:compOpacity
+        transitionTimingFunction: "ease-out",
+        opacity: compOpacity
+    }
+
+
+    const firstImgStyle: any = {
+        transitionDuration: "0.3s",
+        scale: compScale+"",
+        transitionTimingFunction: "ease-out",
+        // opacity: Number(!compOpacity),
+        zIndex: 1,
+        position: "relative"
     }
 
     // function backwordAnimate(duration: number) {
@@ -76,23 +85,29 @@ const MerchBlock: React.FC<{ width:string, data: merchInterface }> = (props) => 
 
     return (
         <div
-            style={{width:width}}
+            style={{ width: width }}
             onClick={() => navigate('/product/' + data.id)}
             onMouseEnter={() => {
-                if(data.imgs.length > 1){
-                    showAnimation.current = true
-                    backwordAnimate()
-                }
+                // if (data.imgs.length > 1) {
+                //     showAnimation.current = true
+                //     backwordAnimate()
+                // }
+                setScale(1)
             }}
             onMouseLeave={() => {
-                setOpacity(0)
+               setScale(0.9)
             }}
             className={s.merchWrap}
         >
-            <img className={s.img} style={{ opacity: Number(!compOpacity), zIndex: 1, position: "relative" }} src={data.imgs[0]} alt="airJordan" />
-            {data.imgs.length > 1 ? <img className={s.img} style={secondImgStyle} src={data.imgs[1]} alt="airJordan" /> : null}
+            <div style={{ position: "relative", height: "90%" }}>
+                <img loading={"lazy"} className={s.img} style={firstImgStyle} src={"/" + data.imgs[0]} alt="airJordan" />
+                {data.discount ? <div className={s.discountMarker}>
+                    "Sale"
+                </div> : null}
+            </div>
+            {/* {data.imgs.length > 1 ? <img loading={"lazy"} className={s.img} style={secondImgStyle} src={"/" + data.imgs[1]} alt="airJordan" /> : null} */}
             <div className={s.imgName}>{data.name}</div>
-            <div className={s.imgName}>{data.price}</div>
+            <div style={{ textAlign: "center" }}>{data.discount ? <span className={s.discount}>{data.discount}</span> : null}<span className={s.imgName}>{"От" + data.price}</span></div>
         </div>
     )
 }

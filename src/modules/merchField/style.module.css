@@ -23,3 +23,18 @@
     flex-direction: column;
      margin-top: auto;
 }
+.discount{
+    text-decoration: line-through;
+    color :gray;
+}
+
+.discountMarker{
+    position: absolute;
+    bottom: 0;
+    left:0;
+    background-color: red;
+    z-index: 200;
+    color:white;
+    border-radius: 200px ;
+    padding: 5px;
+}

@@ -10,7 +10,7 @@ type propsRowType = {
 interface settingModuleInterface {
     filters: [{
         name: string,
-        componentInfo: { componentName: string, propsData: any }
+        component: ReactElement
     }],
     memo?: boolean,
     onChange?: (arg: any) => void
@@ -40,7 +40,8 @@ const SettingsModule: React.FC<settingModuleInterface> = (props) => {
         <div className={s.wrapper}>
 
                 {filters.map((el)=>{
-                    return <DoubleInfoDrop info = {el.name}><DynamicElement onChange={onChangeMain.bind(null, el.name)} {...el.componentInfo} /></DoubleInfoDrop>
+                     return <DoubleInfoDrop info = {el.name}>{el.component}</DoubleInfoDrop>
+                    // return <DoubleInfoDrop info = {el.name}><DynamicElement onChange={onChangeMain.bind(null, el.name)} {...el.componentInfo} /></DoubleInfoDrop>
                 })}
         </div>
 

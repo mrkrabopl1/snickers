@@ -1,4 +1,4 @@
-import React, { ReactElement, useRef, useState } from 'react'
+import React, { ReactElement, useEffect, useRef, useState } from 'react'
 import check from '../../../public/check.svg'
 import s from "./style.module.css"
 
@@ -14,6 +14,9 @@ type propsRowType = {
 const Checkbox: React.FC<propsRowType> = (props) => {
     let {onChange,className,enable,activeData} = {...props}
     let [active,setAcive] = useState(activeData)
+    useEffect(()=>{
+        setAcive(activeData)
+    },[activeData])
     return (
         <div onClick={()=>{
             if(enable){

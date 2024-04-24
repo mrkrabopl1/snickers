@@ -10,7 +10,7 @@
 
 .priceHolder{
    display: flex;
-   justify-content: center;
+   flex-wrap: wrap;
 }
 .priceWrapper{
     width: 20%;

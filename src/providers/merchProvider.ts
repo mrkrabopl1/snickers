@@ -35,9 +35,13 @@ const getBrends = function (callback: (val: any) => void) {
     })
 }
 
+type collectionType = {
+    name:string,
+    page:number,
+    size:number
+}
 
-
-const getCollections = function (collection:any,callback: (val: any) => void) {
+const getCollections = function (collection:collectionType,callback: (val: any) => void) {
     let json = JSON.stringify(collection)
     axios({
         method: 'post',
@@ -55,7 +59,7 @@ const getCollections = function (collection:any,callback: (val: any) => void) {
 const getMainInfo = function (callback: (val: any) => void) {
     axios({
         method: 'get',
-        url: 'http://127.0.0.1:5000/mainInfo',
+        url: 'http://127.0.0.1:8100/mainPage',
         headers: {}
     }
     ).then((res:any)=>{

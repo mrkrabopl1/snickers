@@ -2,7 +2,7 @@ import React, { useEffect, ReactElement, useState, useRef } from 'react'
 import {NavLink, useParams } from 'react-router-dom';
 import { getCollections } from "src/providers/merchProvider"
 
-import MerchSliderField  from 'src/modules/merchField/MerchFieldWithPageSwitcher';
+import MerchFieldWithPageSwitcher  from 'src/modules/merchField/MerchFieldWithPageSwitcher';
 type urlParamsType = {
     collection: string;
   };
@@ -81,7 +81,7 @@ const CollectionPage: React.FC<any> = () => {
     return (
 
         <div >
-           <MerchSliderField onChange={pageChange} currentPage = {currentPage.current}  pages={pages.current} heightRow={500} size={grid?2:3} data={merchFieldData} />   
+           <MerchFieldWithPageSwitcher onChange={pageChange} currentPage = {currentPage.current}  pages={pages.current} heightRow={500} size={grid?2:3} data={merchFieldData} />   
         </div>
 
 

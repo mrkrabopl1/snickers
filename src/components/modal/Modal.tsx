@@ -1,4 +1,4 @@
-import React, {SetStateAction,Dispatch } from 'react';
+import React, {SetStateAction,Dispatch,useEffect } from 'react';
 import s from "./style.module.css"
 
 interface ModalProps {
@@ -13,17 +13,20 @@ const Modal: React.FC<ModalProps> = ({active, onChange,children}) => {
     }else{
         document.body.style.overflow = 'unset';
     }
-    
+    useEffect(()=>{
+        return()=>{
+         console.debug("exit")
+        }
+     },[])
     return (
-        <div 
+        <div  
+            key={new Date().getTime()}
             onWheel={(e)=>{
                 e.stopPropagation()
             }} 
             className={active?s.modalBack:s.none}
             onClick={()=>onChange(false)}>
-            <div onClick={(e)=>{e.stopPropagation()}} className={s.modalWrap}>
-                {children}
-            </div>
+           {children}
         </div>
     )
 }

@@ -1,23 +1,15 @@
-import React, { useEffect, ReactElement, useState, useRef } from 'react'
-import { imgImport, getImgs, getImg } from "src/providers/imgProvider"
+import React, { useEffect, ReactElement, useState, useRef, lazy } from 'react'
 import { useAppSelector, useAppDispatch } from 'src/store/hooks/redux'
 import { cartCountAction } from 'src/store/reducers/menuSlice'
-import ComplexDropMenu from './modules/menu/ComplexDropMenu'
-import MerchSliderField from './modules/merchField/MerchSliderField'
-import { getBrends } from './providers/merchProvider'
 import axios from "axios";
 import DropZone from "src/develop/dropZone/DropZone"
-import MerchBlock from './modules/merchField/MerchBlock'
-import Root from './Root'
-import Team from './Team'
-import MerchField from "src/modules/merchField/MerchField"
-import ComplexDrop from "src/components/complexDrop/ComplexDrop"
-import SnickersInfo from './pages/snickersInfo/SnickersInfo'
+const SnickersInfo = lazy(() => import('./pages/snickersInfo/SnickersInfo'))
 import Form from './pages/formPage/FormPage'
 import BuyPage from './pages/buyPage/BuyPage'
-import CollectionPage from './pages/collectionPage/CollectionPage'
-import Main from './pages/Main'
+const CollectionPage = lazy(() => import('./pages/collectionPage/CollectionPage'))
+import Main from './pages/main/Main'
 import { getCookie } from './global'
+import WayToPay from './pages/infoPages/WayToPay'
 import {
   Link, Route, BrowserRouter as Router, Routes,
   createBrowserRouter,
@@ -29,6 +21,9 @@ import {
 import SettingsModule from './modules/settingsModule/SettingsModule.old'
 import SearchPage from './pages/SearchPage'
 import ComplexDropMenuWithRequest from './modules/menu/ComplexDropMenuWithRequest'
+import Footer from './modules/footer/Footer'
+import Delivery from './pages/infoPages/Delivery'
+import Faq from './pages/infoPages/Faq'
 
 
 const App: React.FC<any> = () => {
@@ -58,8 +53,9 @@ const App: React.FC<any> = () => {
       <Routes>
         <Route path="/" element={
           <div>
-            <ComplexDropMenuWithRequest  />
+            <ComplexDropMenuWithRequest />
             <Outlet />
+            <Footer />
           </div>}>
 
           <Route path="/" element={
@@ -73,15 +69,17 @@ const App: React.FC<any> = () => {
 
           </Route>
           <Route path="/product/:snickers" element={
-            <SnickersInfo />
-
+            <React.Suspense fallback={<>...</>}>
+              <SnickersInfo />
+            </React.Suspense>
           }
           >
 
           </Route>
           <Route path="/collections/:collection" element={
-            <CollectionPage />
-
+            <React.Suspense fallback={<>...</>}>
+              <CollectionPage />
+            </React.Suspense>
           }
           >
 
@@ -102,8 +100,20 @@ const App: React.FC<any> = () => {
           <Route path="/buy" element={
             <BuyPage />
 
-          }
-          >
+          }>
+          </Route>
+          <Route path="/way_to_pay" element={
+            <WayToPay />
+
+          }>
+          </Route>
+          <Route path="/delivery" element={
+            <Delivery />
+          }>
+          </Route>
+          <Route path="/faq" element={
+            <Faq />
+          }>
           </Route>
         </Route>
       </Routes>

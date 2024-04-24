@@ -8,6 +8,7 @@
     left: 0;
     background-color: rgba(210, 68, 85, 0.2);
     backdrop-filter: blur(2px);
+    display: flex;
 }
 
 .none{
@@ -26,17 +27,6 @@
     font-family: 'Open Sans', 'Helvetica Neue', 'Segoe UI', 'Calibri', 'Arial', sans-serif;
 }
 
-.modalWrap{
-    position: absolute;
-    width: 100%;
-    top: 0;
-    right:0;
-    left:0;
-    bottom: 0;
-    height: 100px;
-    background-color: white;
-    font-family: 'Open Sans', 'Helvetica Neue', 'Segoe UI', 'Calibri', 'Arial', sans-serif;
-}
 
 .close{
     font-size: 50px;

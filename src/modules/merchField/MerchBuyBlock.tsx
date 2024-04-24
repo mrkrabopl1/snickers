@@ -14,7 +14,7 @@ const MerchBuyBlock: React.FC<{ data: merchInterface,onChange:()=>void}> = (prop
     return (
         <div style={{display:"flex"}}>
             <div style={{width:"100%"}} onClick={() => navigate('product/' + data.id)} className={s.merchLine}>
-                <img className={s.buyImg} style={{height:"", width: "30%", flexShrink: 0 }} src={data.imgs} alt="" />
+                <img className={s.buyImg} style={{height:"", width: "30%", flexShrink: 0 }} src={"/"+data.imgs} alt="" />
                 <div>
                     <p>
                         {data.firm}

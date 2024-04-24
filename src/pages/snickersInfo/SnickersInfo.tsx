@@ -2,7 +2,7 @@ import React, { ReactElement, useEffect, useRef, useState } from 'react'
 import { NavLink, useParams } from 'react-router-dom';
 import { getImg } from "src/providers/imgProvider"
 import { getMerchPrice, getMerchInfo, getSizeTable } from "src/providers/merchProvider"
-import PriceHolder from 'src/components/PriceHolder/PriceHolder';
+import PriceHolder from 'src/modules/PriceHolder/PriceHolder';
 import TableWithComboboxColumn from 'src/components/table/simpleTable/TableWithComboboxColumn';
 import Button from 'src/components/Button';
 import Scroller from 'src/components/scroller/Scroller';
@@ -18,7 +18,9 @@ import { createPreorder, updatePreorder } from 'src/providers/orderProvider';
 import s from "./style.module.css"
 import { setCookie, getCookie } from 'src/global';
 
+import {sizes,getMerchPrice1} from 'src/constFiles/size';
 
+console.debug(sizes,getMerchPrice1)
 
 const text = "Если вы нашли данную модель где-либо в наличии по более низкой цене — пришлите нам ссылку на данную модель в другом магазине. Мы будем рады предложить вам скидку, компенсирующую разницу в стоимости, и лучшую цену относительно конкурентов." +
     +"Обратите внимание, что акция распространяется только на российские платформы."
@@ -58,15 +60,49 @@ const SnickersInfo: React.FC = () => {
     const navigate = useNavigate();
     let dispatch = useAppDispatch()
     let { snickers } = useParams<urlParamsType>();
+    let [recalc, setRecalc] = useState<boolean>(true)
     let [merchInfo, setMerchInfo] = useState<any>({ imgs: [], name: "", info: {} })
+    let currentPrice  = useRef<string>("")
+    let currentDiscount  = useRef<string>("")
+    let currentProiceDiscount  = useRef<string>("")
+    let pricesArr = useRef<any>([])
 
     const {cartCount} = useAppSelector(state =>state.menuReducer)
 
     let size = Object.keys(merchInfo.info)[0]
     let currentSize = useRef<string>("")
-    let [local, setLocla] = useState<string>("ru")
+    let [local, setLocal] = useState<string>("ru")
     console.debug(merchInfo)
     let [active, setActive] = useState(false)
+
+    const setMerchInfoHandler=(val:any)=>{
+        const info = JSON.parse(val.info)
+        let discountParse = null;
+        if(val.discount){
+            discountParse = JSON.parse(val.discount)
+        }
+        let infoData = Object.entries(info)
+        infoData.forEach(priceEl=>{
+            let price = priceEl[1]
+            let discount = 0
+            if(discountParse){
+                if(discountParse[priceEl[0]]){
+                    discount = discountParse[priceEl[0]]
+                }
+            }
+            let size 
+            if (local === "ru") {
+                size = sizes.sizes["ru"][sizes.sizes["us"].indexOf(Number(priceEl[0]))]
+            }
+            let prHolderElem = {
+                discount:discount,
+                price:price,
+                size:size
+            }
+            pricesArr.current.push(prHolderElem)
+        })
+        setMerchInfo(val)
+    }
     let [tableInfo, setTableInfo] = useState<tableType>({ sizes: {}, table: [{ table: [], title: "" }], comboTable: [{ table: [], title: "" }] })
     if (size) {
         currentSize.current = size;
@@ -78,13 +114,22 @@ const SnickersInfo: React.FC = () => {
     }, [merchInfo])
     useEffect(() => {
         if (snickers) {
-            getMerchInfo(snickers, (val) => { setMerchInfo(val) })
+            getMerchInfo(snickers, (val) => { setMerchInfoHandler(val) })
         }
 
     }, [])
     useEffect(() => {
         getSizeTable((val) => { setTableInfo(val) })
     }, [])
+
+    const priceChangeHandler= (indx:number)=>{
+       const priceBlock =  pricesArr.current[indx]
+       currentPrice.current = priceBlock.price - priceBlock.discount + "Р"
+       currentDiscount.current = priceBlock.discount
+       currentSize.current =  priceBlock.size
+       currentProiceDiscount.current =   priceBlock.price
+       setRecalc(!recalc)
+    }
     return (
         <div>
             <div className={s.mainWrap}>
@@ -98,7 +143,8 @@ const SnickersInfo: React.FC = () => {
                         setActive(true)
                     }} />
                     <h1 className={s.merchName} >{merchInfo.name}</h1>
-                    <PriceHolder onChange={(size) => { currentSize.current = size }} elems={merchInfo.info} />
+                    <div>{currentDiscount.current?<span>{currentProiceDiscount.current}</span>:null}<span>{currentPrice.current}</span></div>
+                    <PriceHolder onChange={priceChangeHandler} elems={pricesArr.current} />
                     <Button text='Купить' className={s.buyMerch} onChange={() => {
                         dispatch(setSnickers([{
                             count: 1,

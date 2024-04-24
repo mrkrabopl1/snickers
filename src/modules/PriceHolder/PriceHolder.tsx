@@ -5,32 +5,35 @@ import {useAppSelector} from 'src/store/hooks/redux'
 import merchType from 'src/types/merchType'
 
 
-type MerchType = {
-    [key: string]: merchType,
-}
-
+type MerchType = merchType[]
 type PriceHolderType = {
     elems: MerchType|null,
-    onChange:(args:any)=>void
+    onChange:(args:any)=>void,
+    activeInd?:number
 }
 
 const PriceHolder: React.FC<PriceHolderType> = (props) => {
     
-    let { elems,onChange } = { ...props }
+    let { elems,onChange,activeInd } = { ...props }
+
+    let [activeState,setActiveState] = useState<number>(activeInd?activeInd:0)
     let priceState = useAppSelector(state => state.priceReducer)
+
+    const activeChange= (ind:number)=>{
+        onChange(ind)
+        setActiveState(ind)
+    }
 
     function setPriceBlocks() {
         if(elems){
-            let arrOfElems = Object.entries(elems)
-            let arr = arrOfElems.map((val, id) => {
+            let arr = elems.map((val, ind) => {
                 return <PricesBlock 
-                    onChange={onChange}
-                    active={priceState.chosen === id}
-                    size={val[0]}
-                    price={val[1].price}
-                    availability={val[1].availability}
-                    discount={val[1].discount}
-                    id={id}
+                    onChange={()=>activeChange(ind)}
+                    active={activeState === ind}
+                    size={val.size}
+                    price={val.price - val.discount}
+                    discount={val.discount}
+                    id={ind}
                     />
             })
     

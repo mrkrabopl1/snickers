@@ -4,7 +4,6 @@ import DynamicForm from 'src/components/dynamicForm/DynamicForm'
 import { useAppDispatch } from 'src/store/hooks/redux'
 import { secondDropSlice } from 'src/store/reducers/secondDropSlice'
 import DynamicElement from "src/components/dynamicElement/DynamicElement"
-import { getFilters } from "src/providers/searchProvider"
 import Button from "src/components/Button"
 import s from './style.module.css'
 type propsRowType = {
@@ -24,26 +23,13 @@ interface settingModuleInterface {
         mainForm?: string
     }
 }
-
-type dataType = { price: number[], sizes: number[] }
 const SettingsModuleOld: React.FC<settingModuleInterface> = (props) => {
     let { filters, onChange, classNames } = { ...props }
-    let dataRef = useRef<dataType>({ price: [], sizes: [] })
-    // useEffect(()=>{
-    //     getFilters(setData)
-    // },[])
-
     let currentName = useRef<string>("")
     let currentIndex = useRef<number>(0)
 
-    const setData = (dataInfo: dataType) => {
-        dataRef.current = dataInfo
-    }
+
     let dispatch = useAppDispatch()
-    let secondElemData = {
-        propsData: {},
-        componentName: "none",
-    }
 
 
     let [secondElemName, setSecondElemName] = useState<propsRowType>({

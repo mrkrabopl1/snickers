@@ -13,12 +13,12 @@ const ImagePresantationBlock: React.FC<iconType> = (data) => {
 
     return (
         <div style={{height:"100%"}}  onMouseOut={() => {setHover(false)}} onMouseOver={() => {setHover(true)}}>
-            <img onMouseDown={(e)=>{
+            <img loading={"lazy"} onMouseDown={(e)=>{
                     e.preventDefault();
                 }} style={{display:hover?"block":"none"}} className={s.loop} src={loop} alt="React Logo" />
-            <img  onMouseDown={(e)=>{
+            <img loading={"lazy"} onMouseDown={(e)=>{
                     e.preventDefault();
-                }} style={{objectFit: "contain",width:"100%", height:"100%" }} src={image} alt="" />
+                }} style={{objectFit: "contain",width:"100%", height:"100%" }} src={"/"+image} alt="" />
         </div>
     )
 }

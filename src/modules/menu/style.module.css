@@ -9,8 +9,17 @@
     background-color: white;
 }
 
-
-
+.modalWrap{
+  position: absolute;
+  width: 100%;
+  top: 0;
+  right:0;
+  left:0;
+  bottom: 0;
+  height: 100px;
+  background-color: white;
+  font-family: 'Open Sans', 'Helvetica Neue', 'Segoe UI', 'Calibri', 'Arial', sans-serif;
+}
 .is_hidden {
  
   transform: translateY(-200%);

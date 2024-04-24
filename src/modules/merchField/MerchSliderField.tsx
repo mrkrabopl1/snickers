@@ -4,29 +4,30 @@ import NameBorder from 'src/components/wraps/NameBorder'
 import ContentSlider from 'src/components/contentSlider/ContentSlider'
 
 
-interface merchInterface {[key:string]:{ name: string, imgs: string[],id:string}[]}
+type merchInfoType ={
+    price:string,
+    discount:number,
+    name:string,
+    imgs:string[],
+    firm:string,
+    id:string
+}
 
-const MerchSliderField: React.FC<{ data: merchInterface | null }> = (props) => {
-    let { data } = { ...props }
-    function createSliderSpace(data: merchInterface |null) {
+interface merchInterface { name: string,  merchInfo: merchInfoType[]}
+
+const MerchSliderField: React.FC<merchInterface> = (props) => {
+    let { name,merchInfo } = { ...props }
+    function createSliderSpace(data: merchInfoType[] ) {
         let arr: any = []
+        for(let i =0;i<data.length;i++){
+            arr.push(<MerchBlock width={"25%"} data={data[i]} />)
 
-        if (data) {
-            for(let i in data){
-                let name: any = i
-                let elems: any = data[i]
-                let merchBlocksArr = elems.map((val: any) => {
-                    return <MerchBlock width={"25%"} data={val} />
-                })
-                let opp = <NameBorder {...{ content: <ContentSlider content={merchBlocksArr} />, name: name }} ref={null} />
-                arr.push(opp)
-            }
         }
         return arr
     }
     return (
         <div >
-            {createSliderSpace(data)}
+            <NameBorder {...{ content: <ContentSlider content={createSliderSpace(merchInfo)} />, name: name }} ref={null} />
         </div>
     )
 }

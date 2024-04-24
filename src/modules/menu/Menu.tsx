@@ -10,6 +10,8 @@ import ss from "../../pages/style.module.css"
 import loupe from "/public/vagabond.png";
 import BuyButton from "./BuyButton";
 import { ReactComponent as Loupe } from "/public/loupe.svg";
+import { ReactComponent as SignIn } from "/public/sign.svg";
+import LoginForm from '../loginForm/LoginForm'
 
 import SearchWithList from '../searchWithList/SearchWithList'
 import Modal from 'src/components/modal/Modal'
@@ -58,6 +60,7 @@ const Menu: React.FC<any> = (props) => {
     const { show, sticky } = useAppSelector(state => state.menuReducer)
     const menuWrap = useRef<HTMLDivElement>(null)
     const [active, setActive] = useState<boolean>(false)
+    const [loginActive, setLoginActive] = useState<boolean>(false)
     const { setSearchData } = { ...searchSlice.actions }
     useEffect(() => {
 
@@ -103,16 +106,23 @@ const Menu: React.FC<any> = (props) => {
 
 
             <div style={{ margin: "auto 20px", display: "flex", position: "relative" }}>
+                <SignIn className={global.link} onClick={() => setLoginActive(true)}/>
                 <Loupe onClick={() => setActive(true)} className={global.link} height={"24px"} width={"24px"} />
                 <BuyButton />
 
             </div>
 
-            <Modal onChange={setActive} active={active}>
-                <SearchWithList
-                    onChange={(val) => { dispatch(setSearchData(val)) }}
-                    className={styleData}
-                    searchCallback={searchCallback} />
+            {active?<Modal onChange={setActive} active={true}>
+                <div onClick={(e)=>{e.stopPropagation()}} className={s.modalWrap}>
+                    <SearchWithList
+                            onChange={(val) => { dispatch(setSearchData(val)) }}
+                            className={styleData}
+                            searchCallback={searchCallback} />
+                </div>
+            </Modal>:null}
+
+            <Modal onChange={setLoginActive} active={loginActive}>
+                    <LoginForm onChange={()=>{}}/>
             </Modal>
 
         </div>

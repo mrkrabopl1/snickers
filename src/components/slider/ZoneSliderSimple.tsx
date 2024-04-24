@@ -23,8 +23,10 @@ const  ZoneSliderSimple: React.FC<ZoneSliderSetterType>= ({min,max, onChange}) =
     let sliderRefLeft = useRef<HTMLDivElement>(null)
     let activeLeft = useRef(false)
     let activeRight = useRef(false)
-    let sliderLeftData = useRef<number>(min)
-    let sliderRightData = useRef<number>(max)
+    let sliderLeftData = useRef<number>(0)
+    sliderLeftData.current = min
+    let sliderRightData = useRef<number>(0)
+    sliderRightData.current = max
 
     useEffect(()=>{
         if( wrappRef.current){
